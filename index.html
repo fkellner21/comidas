@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+ crossorigin=""></script>
+ <style>#map { height: 250px; }</style>
+</head>
+<body>
+  <ion-app>
+    <!-- ruteo -->
+    <ion-router id="ruteo">
+        <ion-route url="/" component="page-home"></ion-route>
+        <ion-route url="/login" component="page-login"></ion-route>
+        <ion-route url="/registrarU" component="page-registro"></ion-route>
+        <ion-route url="/registrarC" component="page-comida"></ion-route>
+        <ion-route url="/listarRegistros" component="page-listado"></ion-route>
+        <ion-route url="/informeCalorias" component="page-informe"></ion-route>
+        <ion-route url="/mapa" component="page-mapa"></ion-route>
+    </ion-router>
+    <ion-nav></ion-nav>
+
+
+    <!-- menu -->
+    <ion-menu content-id="main-content" id="menu">
+        <ion-header>
+          <ion-toolbar color="dark">
+            <ion-title>Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">Elija una opción
+            <ion-item id="btnMenuHome" href="/" onclick="cerrarMenu()">
+                <ion-label aria-label="Home"> <ion-icon name="home-outline" aria-hidden="true"></ion-icon> Home</ion-label>
+              </ion-item>
+            <ion-item id="btnMenuLogin" href="/login" onclick="cerrarMenu()">
+                <ion-label aria-label="Login"><ion-icon name="person-outline" aria-hidden="true"></ion-icon> Login</ion-label>
+              </ion-item>
+              <ion-item id="btnMenuRegistrarU" href="/registrarU" onclick="cerrarMenu()">
+                <ion-label aria-label="RegistroU"><ion-icon name="person-add-outline" aria-hidden="true"></ion-icon> Registrar Usuario</ion-label>
+              </ion-item>
+              <ion-item id="btnMenuRegistrarC" href="/registrarC" onclick="cerrarMenu()">
+                <ion-label aria-label="RegistroC"><ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon> Registrar Comida</ion-label>
+              </ion-item>             
+              <ion-item id="btnMenuListarRegistros" href="/listarRegistros" onclick="cerrarMenu()">
+                <ion-label aria-label="Listar"><ion-icon name="list-outline" aria-hidden="true"></ion-icon> Listar registros realizados</ion-label>
+              </ion-item>  
+              <ion-item id="btnMenuInformeDeCalorias" href="/informeCalorias" onclick="cerrarMenu()">
+                <ion-label aria-label="Informe"><ion-icon name="newspaper-outline" aria-hidden="true"></ion-icon> Informe de calorías</ion-label>
+              </ion-item>
+              <ion-item id="btnMenuMapa" href="/mapa" onclick="cerrarMenu()">
+                <ion-label aria-label="Mapa"><ion-icon name="map-outline" aria-hidden="true"></ion-icon> Usuarios por el mundo</ion-label>
+              </ion-item>  
+              <ion-item id="btnMenuLogout" href="/" onclick="cerrarMenu()">
+                <ion-label aria-label="Logout"><ion-icon name="ban-outline" aria-hidden="true"></ion-icon> Cerrar sesión</ion-label>
+              </ion-item>  
+        </ion-content>
+
+      </ion-menu>
+      <div class="ion-page" id="main-content">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-title>Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding"> Bienvenido a la vida saludable. </ion-content>
+      </div>
+
+
+
+    <!-- pantallas -->
+
+    <page-home class="ion-page" id="pantalla-home">
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-menu-button></ion-menu-button>
+                  </ion-buttons>
+              <ion-title>Bienvenido</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <h1>Control y registro de alimentos</h1>
+            <ion-img src="/img/fondo-home.jpg" alt="imagen de fondo"></ion-img>
+          </ion-content>
+    </page-home>
+
+    <page-login class="ion-page" id="pantalla-login" >
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-menu-button></ion-menu-button>
+                  </ion-buttons>
+              <ion-title>Login</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding" >
+
+            <ion-card>
+              <img alt="imagen de fondo" src="/img/img-login.png" />
+              <ion-card-header>
+                <ion-card-title>Bienvenido nuevamente</ion-card-title>
+                <ion-card-subtitle>Ingrese sus credenciales</ion-card-subtitle>
+              </ion-card-header>
+            
+              <ion-card-content>
+                <ion-item >
+                  <ion-input label="Usuario" placeholder="Ingrese su usuario" id="usuarioLogin"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input label="Password" type="password" placeholder="Ingrese su clave" id="passwordLogin"></ion-input>
+                </ion-item>
+                <ion-item>
+                <ion-button id="btnLogin">Ingresar</ion-button>
+                </ion-item>
+              </ion-card-content>
+            </ion-card>
+            <ion-item>
+              <p id="pLogin"></p>
+            </ion-item>
+          </ion-content>
+    </page-login>
+
+   <page-registro class="ion-page" id="pantalla-registro">
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-menu-button></ion-menu-button>
+                  </ion-buttons>
+              <ion-title>Registro</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+
+            <ion-card>
+              <img alt="imagen de fondo" src="/img/img-login.png" />
+              <ion-card-header>
+                <ion-card-title>Bienvenido a una nueva vida</ion-card-title>
+                <ion-card-subtitle>Ingrese sus datos</ion-card-subtitle>
+              </ion-card-header>
+            
+              <ion-card-content>
+                <ion-item >
+                  <ion-input label="Usuario" placeholder="Ingrese su usuario" id="usuarioRegistro"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input label="Password" type="password" placeholder="Ingrese su contraseña" id="passwordRegistro"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-select label="Nacionalidad" label-placement="floating" id="slcPais">
+                    
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+                <ion-item>
+                  <ion-input label="Calorias diarias recomendadas" type="number" placeholder="Ingrese la cantidad" id="caloriasRegistro"></ion-input>
+                </ion-item>
+                <ion-button id="btnRegistrarNuevoU">Registrar</ion-button>
+                <ion-item>
+                  <p id="pRegistro"></p>
+                </ion-item>
+              </ion-card-content>
+            </ion-card>
+
+          </ion-content>
+    </page-registro>
+
+    <page-comida class="ion-page" id="pantalla-comida">
+      <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+              </ion-buttons>
+          <ion-title>Registrar un nuevo consumo</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+
+        <ion-card>
+          <img alt="imagen de fondo" src="/img/img-login.png" />
+          <ion-card-header>
+            <ion-card-title>Ingrese los datos de su consumo</ion-card-title>
+            <ion-card-subtitle></ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <ion-item>
+              <ion-select label="Seleccione el alimento" label-placement="floating" id="slcAlimento">
+                
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-input label="Cantidad consumida" type="number" placeholder="0" id="unidadComida"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Fecha del consumo</ion-label>
+              <ion-datetime presentation="date" value="2022-04-21T00:00:00" id="fechaConsumo" max="2022-05-31T23:59:59"></ion-datetime>
+            </ion-item>
+            <ion-button id="btnRegistrarNuevoC">Registrar</ion-button>
+          </ion-card-content>
+        </ion-card>
+        <ion-item>
+          <p ></p>
+        </ion-item>
+      </ion-content>
+    </page-comida>
+
+
+    <page-listado class="ion-page" id="pantalla-listado">
+      <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+              </ion-buttons>
+          <ion-title>Listado de registros</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+
+        <ion-card>
+          <img alt="imagen de fondo" src="/img/img-login.png" />
+          <ion-card-header>
+            <ion-card-title>Registros ingresados</ion-card-title>
+            <ion-card-subtitle></ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <ion-item>
+                <ion-label>Consumos desde</ion-label>
+              <ion-datetime presentation="date" value="2024-02-07T00:00:00" id="fechaDesde" ></ion-datetime>
+            </ion-item>
+            <ion-item>
+              <ion-label>Consumos hasta</ion-label>
+            <ion-datetime presentation="date" value="2022-02-08T00:00:00" id="fechaHasta" ></ion-datetime>
+          </ion-item>
+            <ion-button id="btnFiltrarRegistros">Filtrar</ion-button>
+          </ion-card-content>
+        </ion-card>
+        <ion-list id="listaRegistros">
+        </ion-list>
+        <ion-item></ion-item>
+      </ion-content>
+    </page-listado>
+
+    <page-informe class="ion-page" id="pantalla-informe">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title>Informe de calorias</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <h1>Muestra los consumos hasta el momento</h1>
+        <div>
+          <div>
+            <h4>Calorias totales: <ion-badge id="caloriasTotales" color="dark">Cargando...</ion-badge></h4>
+          </div>
+          <div>
+            <h4>Calorias diarias: <ion-badge id="caloriasDiarias" color="dark">Cargando...</ion-badge></h4>
+          </div>
+        </div>
+      </ion-content>
+    </page-informe>
+
+  <page-mapa class="ion-page" id="pantalla-mapa">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+              </ion-buttons>
+          <ion-title>Usuarios por el mundo</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-input label="Paises con mas de: " type="number" placeholder="Cantidad minima de usuarios" id="usuariosAfiltrar"></ion-input>
+        <ion-button id="btnFiltrarUsuarios">Filtrar</ion-button>
+        <h1>Nuestra comunidad</h1>
+        <div id="map"></div>
+      </ion-content>
+  </page-mapa>
+
+</ion-app>
+  <script src="js/code.js"></script>
+
+</body>
+</html>
